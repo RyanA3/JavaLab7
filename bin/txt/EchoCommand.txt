@@ -1,0 +1,14 @@
+import java.util.ArrayList;
+
+import promptman.MenuCommand;
+
+public class EchoCommand implements MenuCommand {
+
+    public void execute(ArrayList<String> args) {
+        for(String s : args) {
+            System.out.print(s + " ");
+            System.out.println();
+        }
+    }
+    
+}

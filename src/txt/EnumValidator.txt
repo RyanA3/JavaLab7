@@ -1,0 +1,25 @@
+package promptman;
+
+public class EnumValidator implements Validator {
+
+    private String[] valid;
+
+    public EnumValidator(String[] valid) {
+        this.valid = valid;
+    }
+
+    public <E extends Enum<E>> EnumValidator(Enum<E>[] valid) {
+        this.valid = new String[valid.length];
+        for(int i = 0; i < valid.length; i++) {
+            this.valid[i] = valid[i].name();
+        }
+    }
+
+    public boolean isValid(String value) {
+        for(String check : valid) {
+            if(check.equalsIgnoreCase(value)) return true;
+        }
+        return false;
+    }
+    
+}

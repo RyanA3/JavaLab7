@@ -1,0 +1,231 @@
+package promptman;
+
+import java.util.Scanner;
+
+public class Menu {
+
+    private MenuItem[] items;
+    private String welcomeMessage = "Welcome to menu";
+    private String goodbyeMessage = "Goodbye menu, it was nice";
+    private String invalidCommand = "Invalid command: ";
+    private int numMenuItems = 0;
+    private boolean running = false;
+
+    /*
+     * Menu
+     * Creates a new menu object with 10 open slots for menu items
+     * Automatically initialized with the default help and exit command
+     * 
+     * Returns
+     * A new menu object
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public Menu() {
+        items = new MenuItem[10];
+        items[0] = new MenuItem("help", "The default help command", null, new HelpCommand(this));
+
+        Prompt exitConfirmPrompt = new Prompt().pstr("Are you sure you want to exit? (Y/n)");
+        items[1] = new MenuItem("exit", "Exits the menu", exitConfirmPrompt, new ExitCommand(this));
+        numMenuItems = 2;
+    }
+
+    /*
+     * Menu
+     * Creates a new menu object with the provided MenuItems
+     * 
+     * Parameters
+     * MenuItem[] - an array of menu items for the user to select
+     * 
+     * Returns
+     * A new menu object
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public Menu(MenuItem[] items) {
+        this.items = items;
+        this.numMenuItems = items.length;
+    }
+
+    /*
+     * Execute
+     * Attempts to execute a user entered command if it is in the menu
+     * 
+     * Parameters
+     * Scanner in - the input method for prompt based commands
+     * String command - the key the user entered to select a command
+     * 
+     * Returns
+     * true if any command was executed
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public boolean execute(Scanner in, String command) {
+        for(int i = 0; i < numMenuItems; i++) {
+            if(items[i].executeIfCalled(in, command)) return true;
+        }
+        return false;
+    }
+
+    /*
+     * Begin
+     * Enters the user into the menu loop
+     * 
+     * Parameters
+     * Scanner in - the input method for prompt based commands
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public void begin(Scanner in) {
+
+        running = true;
+
+        System.out.println(welcomeMessage);
+        String cmd = "";
+        while(running) {
+            System.out.print("> ");
+            cmd = in.next();
+            if(!execute(in, cmd)) {
+                System.out.println(invalidCommand + "\"" + cmd + "\"");
+            }
+        }
+        System.out.println(goodbyeMessage);
+
+    }
+
+    /*
+     * quit
+     * Immediately exits the menu if it is open
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public void quit() {
+        this.running = false;
+    }
+
+    /*
+     * addMenuItem
+     * Adds a new menu item to select from to the menu
+     * 
+     * Parameters
+     * MenuItem - the item to add to the menu
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public void addMenuItem(MenuItem item) {
+        if(numMenuItems >= items.length) {
+            System.out.println("Error: Max number of menu items reached, failed to add new menu item");
+            return;
+        }
+
+        items[numMenuItems] = item;
+        numMenuItems++;
+    }
+
+    /*
+     * getMenuItems
+     * Gets all current menu items
+     * 
+     * Returns
+     * MenuItem[] - the list of menu items
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public MenuItem[] getMenuItems() {
+        return items;
+    }
+
+    /*
+     * getNumMenuItems
+     * Gets the number of menu items loaded
+     * 
+     * Returns
+     * numMenuItems - the number of menu items loaded
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public int getNumMenuItems() {
+        return numMenuItems;
+    }
+
+    /*
+     * setWelcomeMessage
+     * sets welcome message
+     * 
+     * Params
+     * String message the welcome message
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public void setWelcomeMessage(String message) {
+        this.welcomeMessage = message;
+    }
+
+    /*
+     * setGoodbyeMessage
+     * sets goodbye message
+     * 
+     * Params
+     * String message the goodbye message
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public void getGoodbyeMessage(String message) {
+        this.goodbyeMessage = message;
+    }
+
+    /*
+     * getWelcomeMessage
+     * gets welcome message
+     * 
+     * Returns
+     * String message the welcome message
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public String getWelcomeMessage() {
+        return welcomeMessage;
+    }
+
+    /*
+     * getGoodbyeMessage
+     * gets goodbye message
+     * 
+     * Returns
+     * String message the goodbye message
+     *  
+     * Author Ryan Alsobrooks
+     * Author ID hl7878
+     * Author Date 10-26-23
+     */
+    public String getGoodbyeMessage() {
+        return goodbyeMessage;
+    }
+
+    
+
+
+    
+}

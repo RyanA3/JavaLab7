@@ -1,0 +1,28 @@
+/*
+ * 
+ * Ryan Alsobrooks
+ * hl7878
+ * Lab 07
+ * 10-26-23
+ * 
+ */
+
+
+import promptman.*;
+import java.util.Scanner;
+
+public class hl7878_Lab07 {
+
+    public static void main(String[] args) {
+
+        Menu menu = new Menu();
+
+        Prompt echoPrompt = new Prompt().pstr("echoValue");
+        MenuItem echoMenuItem = new MenuItem("echo", "Prints back what the user enters in a prompt", echoPrompt, new EchoCommand());
+        menu.addMenuItem(echoMenuItem);
+
+        menu.begin(new Scanner(System.in));
+        
+    }
+
+}

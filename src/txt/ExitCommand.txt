@@ -1,0 +1,19 @@
+package promptman;
+
+import java.util.ArrayList;
+
+public class ExitCommand implements MenuCommand {
+
+    private Menu menu;
+
+    public ExitCommand(Menu menu) {
+        this.menu = menu;
+    }
+
+    public void execute(ArrayList<String> args) {
+        if(args == null || args.size() < 1) return;
+        if(!args.get(0).equalsIgnoreCase("y") && !args.get(0).equalsIgnoreCase("yes")) return;
+        menu.quit();
+    }
+    
+}

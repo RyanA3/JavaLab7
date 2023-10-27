@@ -1,0 +1,85 @@
+package prompt;
+
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Prompt {
+
+    private static final IntValidator INT_VALIDATOR = new IntValidator();
+    private static final FloatValidator FLOAT_VALIDATOR = new FloatValidator();
+    
+    private List<String> fieldNames;
+    private List<Validator> validators;
+
+    public Prompt() {
+        this.fieldNames = new ArrayList<String>();
+        this.validators = new ArrayList<Validator>();
+    }
+
+    public Prompt pint(String name) {
+        fieldNames.add(name);
+        validators.add(INT_VALIDATOR);
+        return this;
+    }
+
+    public Prompt pfloat(String name) {
+        fieldNames.add(name);
+        validators.add(FLOAT_VALIDATOR);
+        return this;
+    }
+
+    public Prompt penum(String name, String[] valid) {
+        fieldNames.add(name);
+        validators.add(new EnumValidator(valid));
+        return this;
+    }
+
+    public <E extends Enum<E>> Prompt penum(String name, Enum<E>[] valid ) {
+        fieldNames.add(name);
+        validators.add(new EnumValidator(valid));
+        return this;
+    }
+
+    public Prompt pstr(String name) {
+        fieldNames.add(name);
+        validators.add(null);
+        return this;
+    }
+
+    public ArrayList<String> go(Scanner in) {
+
+        ArrayList<String> out = new ArrayList<String>();
+
+        String inpt;
+        Iterator<Validator> viter = validators.iterator();
+        for(String fieldName : fieldNames) {
+            Validator v = viter.next();
+            
+            System.out.print(fieldName + ": ");
+            inpt = in.next();
+
+            if(inpt.equalsIgnoreCase("x")) {
+                System.out.println("Cancelled input process");
+                return null;
+            }
+
+            while(v != null && !v.isValid(inpt)) {
+                System.out.println("Invalid valid, Please try again or enter 'X' to cancel");
+                System.out.print(fieldName + ": ");
+                inpt = in.next();
+                if(inpt.equalsIgnoreCase("x")) {
+                    System.out.println("Cancelled input process");
+                    return null;
+                }
+            }
+
+            out.add(inpt);
+        }
+
+        return out;
+
+    }
+
+}

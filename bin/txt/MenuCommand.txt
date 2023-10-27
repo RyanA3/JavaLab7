@@ -1,0 +1,9 @@
+package promptman;
+
+import java.util.ArrayList;
+
+public interface MenuCommand {
+
+    public void execute(ArrayList<String> args);
+    
+}
